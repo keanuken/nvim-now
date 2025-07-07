@@ -1,0 +1,25 @@
+-- Tweak untuk background transparan
+-- vim.api.nvim_set_hl(0, "Normal", { bg = "NONE", ctermbg = "NONE" })
+-- vim.api.nvim_set_hl(0, "NormalFloat", { bg = "NONE", ctermbg = "NONE" }) -- Floating windows
+-- vim.api.nvim_set_hl(0, "SignColumn", { bg = "NONE", ctermbg = "NONE" }) -- Sign column
+-- vim.api.nvim_set_hl(0, "LineNr", { bg = "NONE", fg = "#7f7f7f" }) -- Nomor baris
+-- vim.api.nvim_set_hl(0, "EndOfBuffer", { bg = "NONE", ctermbg = "NONE" }) -- Tanda ~
+
+-- Tweak untuk integrasi plugin
+-- vim.api.nvim_set_hl(0, "TelescopeNormal", { bg = "NONE", link = "Normal" }) -- Telescope
+-- vim.api.nvim_set_hl(0, "TelescopeBorder", { link = "Comment" }) -- Telescope border
+-- vim.api.nvim_set_hl(0, "OilDir", { link = "Directory" }) -- Oil direktori
+-- vim.api.nvim_set_hl(0, "BufferTabpageFill", { bg = "NONE", link = "Normal" }) -- Barbar tabline
+-- vim.api.nvim_set_hl(0, "BufferCurrent", { bg = "#3f3f3f", fg = "#ffffff", bold = true }) -- Barbar tab aktif
+-- vim.api.nvim_set_hl(0, "BufferVisible", { bg = "NONE", fg = "#aaaaaa" }) -- Barbar tab visible
+-- vim.api.nvim_set_hl(0, "BufferInactive", { bg = "NONE", fg = "#7f7f7f" }) -- Barbar tab tidak aktif
+-- vim.api.nvim_set_hl(0, "DiagnosticVirtualTextError", { link = "ErrorMsg" }) -- Tiny-inline-diagnostic
+-- vim.api.nvim_set_hl(0, "DiagnosticVirtualTextWarn", { link = "WarningMsg" }) -- Tiny-inline-diagnostic
+-- vim.api.nvim_set_hl(0, "TroubleNormal", { bg = "NONE", link = "Normal" }) -- Trouble
+
+-- Pastikan plugin highlight menggunakan desert
+-- vim.g.treesitter_highlight_enabled = true -- Treesitter
+-- vim.g.telescope_border = true -- Telescope
+-- vim.g.barbar_auto_setup_theme = true -- Barbar
+-- vim.g.oil_win_options = { winhighlight = "Normal:Normal,SignColumn:SignColumn" } -- Oil
+-- vim.g.conform_notify_on_error = true -- Conform error feedback

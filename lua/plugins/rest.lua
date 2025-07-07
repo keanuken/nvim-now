@@ -1,0 +1,4 @@
+-- -- first load extension
+-- require("telescope").load_extension("rest")
+-- -- then use it, you can also use the `:Telescope rest select_env` command
+-- require("telescope").extensions.rest.select_env()
