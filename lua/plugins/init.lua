@@ -320,4 +320,10 @@ return {
 		config = true,
 	},
 	{ "echasnovski/mini.surround", event = "InsertEnter", version = "*" },
+	{
+		"andrewferrier/wrapping.nvim",
+		config = function()
+			require("wrapping").setup()
+		end,
+	},
 }
