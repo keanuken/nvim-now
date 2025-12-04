@@ -1,0 +1,32 @@
+name: Check Plugin Updates
+
+on:
+  schedule:
+    - cron: '0 0 * * 1'  # Weekly, at midnight on Monday
+  workflow_dispatch:  # Allow manual trigger
+
+jobs:
+  check-updates:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Install Neovim
+      uses: rhysd/action-setup-vim@v1
+      with:
+        version: nightly
+        neovim: true
+    
+    - name: Update plugins and check for changes
+      run: |
+        # This step would run lazy.nvim's update command if possible
+        # For now, just make sure the config loads
+        nvim -c 'quitall!'
+        
+        # We'll check if lazy-lock.json exists and if plugins can be installed
+        if [ -f "lazy-lock.json" ]; then
+          echo "lazy-lock.json exists, plugins are tracked"
+        else
+          echo "No lazy-lock.json found, this is expected for a personal config"
+        fi

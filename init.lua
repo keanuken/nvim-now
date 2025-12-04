@@ -34,6 +34,11 @@ require("lazy").setup({
 		enabled = true,
 		notify = false,
 	},
+	performance = {
+		rtp = {
+			reset = false, -- Fix for neovim/neovim#29680
+		},
+	},
 })
 
 local ok, _ = pcall(require, "theme")

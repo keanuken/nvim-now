@@ -132,9 +132,111 @@ local function colorscheme_with_save(prompt_bufnr)
 	end
 end
 
+-- Function to find files from project root
+local function find_files_from_project_root()
+	local builtin = require("telescope.builtin")
+	local actions = require("telescope.actions")
+
+	-- Try to find git root first, fallback to cwd
+	local root_dir
+	local git_cmd = vim.fn.system("git rev-parse --show-toplevel 2>/dev/null")
+	if vim.v.shell_error == 0 then
+		root_dir = vim.fn.trim(git_cmd)
+	else
+		root_dir = vim.fn.getcwd()
+	end
+
+	builtin.find_files({
+		prompt_title = "Find Files (Project Root)",
+		cwd = root_dir,
+		hidden = true,
+		respect_gitignore = true,
+	})
+end
+
+-- Function to find config files in lua directory
+local function find_config_files()
+	local builtin = require("telescope.builtin")
+	local actions = require("telescope.actions")
+
+	builtin.find_files({
+		prompt_title = "Find Config Files (Lua)",
+		cwd = vim.fn.stdpath("config") .. "/lua",
+		find_command = {
+			"find",
+			vim.fn.stdpath("config") .. "/lua",
+			"-type",
+			"f",
+			"-name",
+			"*.lua",
+		},
+		hidden = true,
+		respect_gitignore = false,
+	})
+end
+
+-- Function to grep word in current buffer
+local function grep_in_current_buffer()
+	local builtin = require("telescope.builtin")
+
+	builtin.current_buffer_fuzzy_find({
+		prompt_title = "Grep in Current Buffer",
+	})
+end
+
+-- Function to grep word in current buffer directory
+local function grep_in_current_directory()
+	local builtin = require("telescope.builtin")
+
+	local current_file = vim.api.nvim_buf_get_name(0)
+	local current_dir
+
+	if current_file and current_file ~= "" then
+		current_dir = vim.fn.fnamemodify(current_file, ":h")
+	else
+		current_dir = vim.fn.getcwd()
+	end
+
+	builtin.live_grep({
+		prompt_title = "Grep in Current Directory",
+		cwd = current_dir,
+	})
+end
+
+-- Function to grep word in project root
+local function grep_in_project_root()
+	local builtin = require("telescope.builtin")
+
+	-- Try to find git root first, fallback to cwd
+	local root_dir
+	local git_cmd = vim.fn.system("git rev-parse --show-toplevel 2>/dev/null")
+	if vim.v.shell_error == 0 then
+		root_dir = vim.fn.trim(git_cmd)
+	else
+		root_dir = vim.fn.getcwd()
+	end
+
+	builtin.live_grep({
+		prompt_title = "Grep in Project Root",
+		cwd = root_dir,
+	})
+end
+
+-- Function to show code actions with enhanced UI
+local function code_actions_enhanced()
+	-- Use vim.lsp.buf.code_action() with dressing.nvim for enhanced UI
+	vim.lsp.buf.code_action()
+end
+
 return {
 	colorscheme_with_save = colorscheme_with_save,
 	save_theme = save_theme,
+	find_files_from_project_root = find_files_from_project_root,
+	find_config_files = find_config_files,
+	grep_in_current_buffer = grep_in_current_buffer,
+	grep_in_current_directory = grep_in_current_directory,
+	grep_in_project_root = grep_in_project_root,
+	code_actions_enhanced = code_actions_enhanced,
 }
 -- Keymap untuk tema selector
 -- map("n", "<leader>th", function()

@@ -18,8 +18,50 @@ mason_lspconfig.setup({
 -- Handler untuk setup LSP server
 mason_lspconfig.setup({
 	handlers = {
+		-- Load modular LSP configurations
+		vtsls = function()
+			local config = require("lsp.vtsls")
+			local ok, err = pcall(function()
+				lspconfig.vtsls.setup(config)
+			end)
+			if not ok then
+				vim.notify("Failed to setup vtsls LSP: " .. err, vim.log.levels.WARN)
+			end
+		end,
+
+		eslint = function()
+			local config = require("lsp.eslint")
+			local ok, err = pcall(function()
+				lspconfig.eslint.setup(config)
+			end)
+			if not ok then
+				vim.notify("Failed to setup eslint LSP: " .. err, vim.log.levels.WARN)
+			end
+		end,
+
+		lua_ls = function()
+			local config = require("lsp.lua_ls")
+			lspconfig.lua_ls.setup(config)
+		end,
+
+		html = function()
+			local config = require("lsp.web_servers").html
+			lspconfig.html.setup(config)
+		end,
+
+		cssls = function()
+			local config = require("lsp.web_servers").cssls
+			lspconfig.cssls.setup(config)
+		end,
+
+		prismals = function()
+			local config = require("lsp.web_servers").prismals
+			lspconfig.prismals.setup(config)
+		end,
+
+		-- Handler default untuk server lainnya
 		function(server_name)
-			lspconfig[server_name].setup({
+			local config = {
 				on_attach = function(client, bufnr)
 					vim.notify("LSP " .. server_name .. " attached", vim.log.levels.INFO)
 					-- Keymap untuk LSP
@@ -40,12 +82,9 @@ mason_lspconfig.setup({
 					})
 				end,
 				capabilities = require("cmp_nvim_lsp").default_capabilities(),
-				settings = {
-					Lua = {
-						diagnostics = { globals = { "vim" } },
-					},
-				},
-			})
+			}
+
+			lspconfig[server_name].setup(config)
 		end,
 	},
 })

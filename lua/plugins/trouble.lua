@@ -10,10 +10,6 @@ require("trouble").setup({
 	},
 })
 
--- Keymap
-vim.keymap.set("n", "<leader>xx", "<cmd>Trouble diagnostics toggle<cr>", { desc = "Toggle Diagnostics" })
-vim.keymap.set("n", "<leader>xX", "<cmd>Trouble diagnostics toggle filter.buf=0<cr>", { desc = "Buffer Diagnostics" })
-
 -- Refresh diagnostics saat masuk buffer
 vim.api.nvim_create_autocmd({ "BufEnter", "BufReadPost" }, {
 	callback = function()

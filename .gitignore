@@ -1,0 +1,7 @@
+*.log
+*.tmp
+*.swp
+*.swo
+.DS_Store
+.nvimlog
+lua_backup_*

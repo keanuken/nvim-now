@@ -13,54 +13,13 @@ return {
 		"nvim-telescope/telescope.nvim",
 		branch = "0.1.x",
 		dependencies = { "nvim-lua/plenary.nvim" },
-		keys = {
-			{
-				"<leader>ff",
-				function()
-					local current_file = vim.api.nvim_buf_get_name(0)
-					local current_dir
-
-					if current_file and current_file ~= "" then
-						current_dir = vim.fn.fnamemodify(current_file, ":h")
-					end
-					if current_dir and current_dir ~= "" then
-						require("telescope.builtin").find_files({
-							cwd = current_dir,
-						})
-					else
-						require("telescope.builtin").find_files()
-						vim.notify(
-							"Could not determine current buffer's directory, falling back to globalm find_files.",
-							vim.log.levels.INFO
-						)
-					end
-				end,
-				desc = "Telescope: Files (Buffer Dir)",
-			},
-			{ "<leader>gg", "<cmd>Telescope live_grep<cr>", desc = "Live Grep" },
-			{ "<leader>fo", "<cmd>Telescope buffers<cr>", desc = "Open Buffers" },
-			{
-				"<leader>th",
-				function()
-					local telescope_custom = require("plugins.telescope") -- Muat modul kustom Anda
-					require("telescope.builtin").colorscheme({
-						attach_mappings = function(prompt_bufnr, map_func)
-							-- Gunakan fungsi dari modul kustom Anda
-							map_func("i", "<CR>", telescope_custom.colorscheme_with_save)
-							map_func("n", "<CR>", telescope_custom.colorscheme_with_save)
-							return true
-						end,
-					})
-				end,
-				desc = "Colorscheme Picker",
-			},
-		},
+		-- keys moved to core/keymaps.lua
 	},
 
 	-- Oil: File explorer ringan
 	{
 		"stevearc/oil.nvim",
-		keys = { { "-", mode = "n", desc = "Open Oil" } },
+		-- keys moved to core/keymaps.lua
 		config = function()
 			require("plugins.oil")
 		end,
@@ -72,8 +31,8 @@ return {
 		dependencies = { "nvim-tree/nvim-web-devicons" },
 		lazy = false,
 		keys = {
-			{ "<leader>xx", "<cmd>Telescope diagnostics<cr>", desc = "Toggle Diagnostics" },
-			{ "<leader>xX", "<cmd>Telescope diagnostics bufnr=0<cr>", desc = "Buffer Diagnostics" },
+			{ "<leader>xx", "<cmd>Trouble diagnostics toggle<cr>", desc = "Toggle Diagnostics" },
+			{ "<leader>xX", "<cmd>Trouble diagnostics toggle filter.buf=0<cr>", desc = "Buffer Diagnostics" },
 		},
 		config = function()
 			require("plugins.trouble")
@@ -325,5 +284,114 @@ return {
 		config = function()
 			require("wrapping").setup()
 		end,
+	},
+	-- Enhanced UI for vim.ui.select and vim.ui.input
+	{
+		"stevearc/dressing.nvim",
+		event = "VeryLazy",
+		opts = {
+			input = {
+				enabled = true,
+				default_prompt = "➤ ",
+				title_pos = "center",
+				insert_only = true,
+				start_in_insert = true,
+				border = "rounded",
+				relative = "cursor",
+				prefer_width = 40,
+				width = nil,
+				max_width = { 140, 0.9 },
+				min_width = { 20, 0.2 },
+				buf_options = {},
+				win_options = {
+					winblend = 10,
+					winhighlight = "Normal:Normal,NormalNC:Normal",
+				},
+				mappings = {
+					n = {
+						["<Esc>"] = "Close",
+						["<CR>"] = "Confirm",
+					},
+					i = {
+						["<C-c>"] = "Close",
+						["<CR>"] = "Confirm",
+						["<Up>"] = "HistoryPrev",
+						["<Down>"] = "HistoryNext",
+					},
+				},
+			},
+			select = {
+				enabled = true,
+				backend = { "telescope", "fzf_lua", "fzf", "builtin", "nui" },
+				telescope = require("telescope.themes").get_cursor({
+					layout_config = {
+						width = 80,
+						height = 15,
+					},
+				}),
+				fzf = {
+					window = {
+						width = 0.5,
+						height = 0.4,
+					},
+				},
+				fzf_lua = {},
+				nui = {
+					position = "50%",
+					size = nil,
+					relative = "editor",
+				},
+				builtin = {
+					border = "rounded",
+					relative = "editor",
+				},
+			},
+		},
+	},
+	{
+		"folke/which-key.nvim",
+		event = "VeryLazy",
+		opts = {
+			preset = "classic",
+			delay = 200,
+			plugins = {
+				marks = true,
+				registers = true,
+				spelling = {
+					enabled = true,
+					suggestions = 20,
+				},
+				presets = {
+					operators = true,
+					motions = true,
+					text_objects = true,
+					windows = true,
+					nav = true,
+					z = true,
+					g = true,
+				},
+			},
+			win = {
+				border = "rounded",
+				padding = { 1, 2 },
+				title = true,
+				title_pos = "center",
+			},
+			layout = {
+				width = { min = 20 },
+				spacing = 3,
+			},
+			show_help = true,
+			show_keys = true,
+		},
+		keys = {
+			{
+				"<leader>?",
+				function()
+					require("which-key").show({ global = false })
+				end,
+				desc = "Buffer Local Keymaps (which-key)",
+			},
+		},
 	},
 }
