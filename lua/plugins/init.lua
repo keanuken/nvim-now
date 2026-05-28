@@ -13,6 +13,9 @@ return {
 		"nvim-telescope/telescope.nvim",
 		branch = "0.1.x",
 		dependencies = { "nvim-lua/plenary.nvim" },
+    config = function()
+      require("plugins.telescope") -- ✅ load utility module kamu di sini
+    end,
 		-- keys moved to core/keymaps.lua
 	},
 
@@ -122,6 +125,7 @@ return {
 	-- conform.nvim: Formatting
 	{
 		"stevearc/conform.nvim",
+    tag = "v8.3.0",
 		event = { "BufWritePre" },
 		config = function()
 			require("plugins.conform")
@@ -263,17 +267,6 @@ return {
 		end,
 	},
 	{
-		"rest-nvim/rest.nvim",
-		lazy = true,
-		dependencies = {
-			"nvim-treesitter/nvim-treesitter",
-			opts = function(_, opts)
-				opts.ensure_installed = opts.ensure_installed or {}
-				table.insert(opts.ensure_installed, "http")
-			end,
-		},
-	},
-	{
 		"lewis6991/gitsigns.nvim",
 		event = "InsertEnter",
 		config = true,
@@ -323,12 +316,14 @@ return {
 			select = {
 				enabled = true,
 				backend = { "telescope", "fzf_lua", "fzf", "builtin", "nui" },
-				telescope = require("telescope.themes").get_cursor({
-					layout_config = {
-						width = 80,
-						height = 15,
-					},
-				}),
+         telescope = function()
+        return require("telescope.themes").get_cursor({
+          layout_config = {
+            width = 80,
+            height = 15,
+          },
+        })
+        end,
 				fzf = {
 					window = {
 						width = 0.5,

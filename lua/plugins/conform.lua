@@ -8,14 +8,18 @@ require("conform").setup({
 		html = { "prettier" },
 		css = { "prettier" },
 		lua = { "stylua" },
-		prisma = { "prisma_fmt" },
-		python = { "black" },
 	},
-	format_on_save = {
-		timeout_ms = 2500,
-		lsp_fallback = false,
-	},
-	notify_on_error = true,
+   format_on_save = function(bufnr)
+    -- Skip kalau formatter tidak ready
+    if vim.g.disable_autoformat or vim.b[bufnr].disable_autoformat then
+      return
+    end
+    return {
+      timeout_ms = 2500,
+      lsp_fallback = false,
+    }
+  end,
+  notify_on_error = false, -- ← matikan dulu untuk debugging
 })
 
 -- prose wrapper argument for customized prettier

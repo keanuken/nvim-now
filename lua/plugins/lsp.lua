@@ -9,6 +9,15 @@ vim.diagnostic.config({
 	severity_sort = true,
 })
 
+vim.lsp.enable("tailwindcss", false)
+
+lspconfig.ts_ls.setup({
+	autostart = false,
+	root_dir = function()
+		return nil
+	end,
+})
+
 -- Setup Mason-LSPConfig
 mason_lspconfig.setup({
 	ensure_installed = { "vtsls", "html", "cssls", "lua_ls", "prismals" }, -- Sesuaikan dengan kebutuhan
@@ -64,6 +73,12 @@ mason_lspconfig.setup({
 			local config = {
 				on_attach = function(client, bufnr)
 					vim.notify("LSP " .. server_name .. " attached", vim.log.levels.INFO)
+					vim.api.nvim_create_autocmd("CursorHold", {
+						buffer = bufnr,
+						callback = function()
+							vim.diagnostic.show(nil, bufnr)
+						end,
+					})
 					-- Keymap untuk LSP
 					local opts = { buffer = bufnr, noremap = true, silent = true }
 					vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)

@@ -1,8 +1,9 @@
 vim.g.barbar_auto_setup = false -- Nonaktifkan auto setup untuk kustomisasi
 
 require("bufferline").setup({
-	animation = false, -- Nonaktifkan animasi untuk performa
+	animation = true, -- Nonaktifkan animasi untuk performa
 	auto_hide = false, -- Selalu tampilkan tabline
+	no_name_title = nil,
 	tabpages = true, -- Tampilkan tab pages
 	closable = true, -- Aktifkan ikon "X" untuk tutup tab
 	clickable = true, -- Aktifkan klik mouse untuk navigasi
@@ -17,4 +18,3 @@ require("bufferline").setup({
 	-- 	Oil = { event = "BufWipeout" }, -- Integrasi dengan oil.nvim
 	-- },
 })
-
